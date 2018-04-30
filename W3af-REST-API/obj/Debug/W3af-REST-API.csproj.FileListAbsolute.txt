@@ -1,0 +1,13 @@
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\bin\Debug\W3af-REST-API.exe.config
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\bin\Debug\W3af-REST-API.exe
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\bin\Debug\W3af-REST-API.pdb
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\obj\Debug\W3af-REST-API.csprojResolveAssemblyReference.cache
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\obj\Debug\W3af-REST-API.csproj.CoreCompileInputs.cache
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\obj\Debug\W3af-REST-API.exe
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\obj\Debug\W3af-REST-API.pdb
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\bin\Debug\W3af.dll
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\bin\Debug\W3af.pdb
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\obj\Debug\W3af-REST-API.csproj.CopyComplete
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\bin\Debug\Json.NET.Web.dll
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\bin\Debug\Newtonsoft.Json.dll
+C:\Users\emreakirmak\source\repos\W3af-API\W3af-REST-API\bin\Debug\Newtonsoft.Json.xml
