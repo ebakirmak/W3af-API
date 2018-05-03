@@ -24,8 +24,18 @@ namespace W3af
        */
         public string GetScans()
         {
-            return Session.GetExecuteCommand("/scans/");
+            return Session.ExecuteCommand("/scans/","GET",null);
 
+        }
+
+        /*
+         * Bu fonksiyon yeni bir tarama oluşturur.
+         * 
+         *
+         */
+         public string CreateScan(string json)
+        {
+            return Session.ExecuteCommand("/scans/", "POST", json);
         }
 
         public void Dispose()

@@ -49,7 +49,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controller\ScanController.cs" />
+    <Compile Include="Controller\ScanCreateResponse.cs" />
     <Compile Include="Model\Scan.cs" />
+    <Compile Include="Model\ScanCreate.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="View\ScanView.cs" />

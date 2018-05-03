@@ -4,3 +4,9 @@ C:\Users\emreakirmak\source\repos\W3af-API\W3af\obj\Debug\W3af.csprojResolveAsse
 C:\Users\emreakirmak\source\repos\W3af-API\W3af\obj\Debug\W3af.csproj.CoreCompileInputs.cache
 C:\Users\emreakirmak\source\repos\W3af-API\W3af\obj\Debug\W3af.dll
 C:\Users\emreakirmak\source\repos\W3af-API\W3af\obj\Debug\W3af.pdb
+C:\Users\emreakirmak\Desktop\W3af-API\W3af\obj\Debug\W3af.csprojResolveAssemblyReference.cache
+C:\Users\emreakirmak\Desktop\W3af-API\W3af\obj\Debug\W3af.csproj.CoreCompileInputs.cache
+C:\Users\emreakirmak\Desktop\W3af-API\W3af\obj\Debug\W3af.dll
+C:\Users\emreakirmak\Desktop\W3af-API\W3af\obj\Debug\W3af.pdb
+C:\Users\emreakirmak\Desktop\W3af-API\W3af\bin\Debug\W3af.dll
+C:\Users\emreakirmak\Desktop\W3af-API\W3af\bin\Debug\W3af.pdb

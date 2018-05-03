@@ -22,13 +22,32 @@ namespace W3af_REST_API.Controller
          * Bu fonksiyon Taramaları döndürür.
          * This function is returned the scans.
          */
-        public Scan ListScan(W3afManager manager)
+        public ScanCreateResponse ListScan(W3afManager manager)
         {
+            try
+            {
+                string json = manager.GetScans();
+                var scans = JsonConvert.DeserializeObject<ScanCreateResponse>(json);
 
-            var scans = JsonConvert.DeserializeObject<Scan>(manager.GetScans());
+                return scans;
+            }
+            catch (Exception ex)
+            {
 
-            return scans;
+                throw ex;
+            }
+           
         }
 
+        /*
+         * Bu fonksiyon yeni bir Tarama oluşturur.
+         * This function is created a new Scan.
+         */
+         public string CreateScan(W3afManager manager,string json)
+        {
+
+            
+            return manager.CreateScan(json);
+        }
     }
 }

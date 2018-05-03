@@ -27,24 +27,6 @@ namespace W3af_REST_API.Model
         }
 
 
-        [JsonProperty("href")]
-        public string Href { get; set; }
-
-        [JsonProperty("id")]
-        public long Id { get; set; }
-
-        [JsonProperty("message")]
-        public string Message { get; set; }
-
-
-        public Scan()
-        {
-
-        }
-
-        
-
-
-
+       
     }
 }

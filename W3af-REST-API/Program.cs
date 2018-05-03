@@ -15,13 +15,14 @@ namespace W3af_REST_API
         {
             try
             {
-                using (W3afSession session = new W3afSession("206.189.96.44", 5000, "admin", "secret"))
+                using (W3afSession session = new W3afSession("206.189.96.44", 443, "ebakirmak", "1234"))
                 {
                     using (W3afManager manager = new W3afManager(session))
                     {
                         if (session.W3afServiceState())
                         {
-                            PrintScan(manager);
+                            //PrintScan(manager);
+                            CreateScan(manager);
                         }
                         else
                         {
@@ -43,6 +44,11 @@ namespace W3af_REST_API
         private static void PrintScan(W3afManager manager)
         {
             ScanView.PrintScan(manager);
+        }
+
+        private static void CreateScan(W3afManager manager)
+        {
+            ScanView.CreateScan(manager);
         }
     }
 }

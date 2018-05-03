@@ -52,7 +52,7 @@ namespace W3af
             try
             {
                 this.Client = new HttpClient();
-                var byteArray = Encoding.ASCII.GetBytes("admin:secret");
+                var byteArray = Encoding.ASCII.GetBytes(this.Username+":"+this.Password);
                 Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
                 return true;
             }
@@ -108,13 +108,13 @@ namespace W3af
          * W3af servisinde istenilen komutu çalıştırır.
          * 
          */
-        public string GetExecuteCommand(string command)
+        public string ExecuteCommand(string command,string request,string json)
         {
             try
             {
                 if (Authenticate())
                 {
-                    string response = TaskAsync(this.IPAddress, this.ServerPort.ToString(), command,null,"GET");
+                    string response = TaskAsync(this.IPAddress, this.ServerPort.ToString(), command,json,request);
                     return response;
 
                 }
@@ -126,7 +126,7 @@ namespace W3af
             catch (Exception ex)
             {
 
-                Console.WriteLine("W3afSession::GetExecuteCommand" + ex.Message);
+                Console.WriteLine("W3afSession::ExecuteCommand" + ex.Message);
                 return null;
             }
         }
@@ -141,7 +141,7 @@ namespace W3af
             {
 
                 Uri serviceUrl = new Uri("http://" + serviceHost + ":" + servicePort + command);
-                Client.BaseAddress = serviceUrl;
+                //Client.BaseAddress = serviceUrl;
 
                 HttpResponseMessage response;
                 if (request == "GET")
