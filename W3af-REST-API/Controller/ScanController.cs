@@ -18,11 +18,13 @@ namespace W3af_REST_API.Controller
 
         }
 
-        /*
-         * Bu fonksiyon Taramaları döndürür.
-         * This function is returned the scans.
-         */
-        public ScanCreateResponse ListScan(W3afManager manager)
+        /// <summary>
+        /// Bu fonksiyon Taramaları döndürür.
+        /// This function  returns the scans.
+        /// </summary>
+        /// <param name="manager">W3afManager Object</param>
+        /// <returns></returns>
+        public ScanCreateResponse GetScan(W3afManager manager)
         {
             try
             {
@@ -36,18 +38,104 @@ namespace W3af_REST_API.Controller
 
                 throw ex;
             }
-           
+
         }
 
-        /*
-         * Bu fonksiyon yeni bir Tarama oluşturur.
-         * This function is created a new Scan.
-         */
-         public string CreateScan(W3afManager manager,string json)
+        /// <summary>
+        /// Bu fonksiyon yeni bir Tarama oluşturur.
+        /// This function  creates a new Scan.
+        /// </summary>
+        /// <param name="manager">W3afManager Object</param>
+        /// <param name="json">String in valid JSON type</param>
+        /// <returns></returns>
+        public string CreateScan(W3afManager manager, string json)
         {
+            try
+            {
+                return manager.CreateScan(json);
+            }
+            catch (Exception ex)
+            {
 
-            
-            return manager.CreateScan(json);
+                throw ex;
+            }
+
+        }
+
+  
+        /// <summary>
+        /// Bu fonksiyon taramayı siler.
+        /// This function deletes the Scan
+        /// </summary>
+        /// <param name="manager">W3afManager Object</param>
+        /// <param name="id">Scan ID</param>
+        /// <returns></returns>
+        public string DeleteScan(W3afManager manager, string id)
+        {
+            try
+            {
+                return manager.DeleteScan(id);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        /// <summary>
+        ///  Bu fonksiyon  tarama durumunu getirir.
+        ///  This function gets the Scan Status
+        /// </summary>
+        /// <param name="manager">W3afManager Object</param>
+        /// <param name="id">Scan ID</param>
+        /// <returns></returns>
+        public ScanStatus GetScanStatus(W3afManager manager, string id)
+        {
+            try
+            {
+                if (id == null)
+                    return null;
+                string json = manager.GetScanStatus(id);
+                ScanStatus scanStatus = JsonConvert.DeserializeObject<ScanStatus>(json);
+                if (scanStatus != null)
+                    return scanStatus;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ScanController::GetScanStatus Message:" + ex.Message);
+                return null;
+            }
+
+            return null;
+        }
+
+
+ 
+        /// <summary>
+        /// Bu fonksiyon taramayı durdurur.
+        ///  This function stopped the Scan.
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string StopScan(W3afManager manager, string id)
+        {
+            return manager.StopScan(id);
+        }
+
+        /// <summary>
+        /// Bu fonksiyon taramayı duraklatır.
+        /// This function pauses the Scan.
+        /// </summary>
+        /// <param name="manager"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string PauseScan(W3afManager manager,string id)
+        {
+            return manager.PauseScan(id);
         }
     }
 }

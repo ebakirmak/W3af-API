@@ -15,14 +15,47 @@ namespace W3af_REST_API
         {
             try
             {
-                using (W3afSession session = new W3afSession("206.189.96.44", 443, "ebakirmak", "1234"))
+                using (W3afSession session = new W3afSession("172.17.6.150", 443, "ebakirmak", "1234"))
                 {
                     using (W3afManager manager = new W3afManager(session))
                     {
                         if (session.W3afServiceState())
                         {
-                            //PrintScan(manager);
-                            CreateScan(manager);
+
+
+
+
+
+                            string inputSelection = "";
+                            do
+                            {
+                                Console.Write("Yapmak istediğiniz işlemi seçiniz." +
+                                              "\nA: Tarama Oluşturmak İçin" +
+                                              "\nB: Tarama ID döndürmek için " +
+                                              "\nC: Tarama Durumunu Görüntülemek İçin" +
+                                              "\nD: Tarama Silmek İçin" +
+                                              "\nQ: Çıkış İçin" +
+                                              "\nSeçiminiz: ");
+                              inputSelection = Console.ReadLine();
+                                switch (inputSelection)
+                                {
+                                    case "A":
+                                        ScanView.CreateScan(manager);
+                                        break;
+                                    case "B":
+                                        ScanView.GetScan(manager);
+                                        break;
+                                    case "C":
+                                        ScanView.GetScanStatus(manager);
+                                        break;
+                                    case "D":
+                                        ScanView.DeleteScan(manager);
+                                        break;
+                                    default:
+                                        Console.WriteLine("\n***Hatalı Seçim. Lütfen Seçiminizi kontrol ediniz.***\n");
+                                        break;
+                                }
+                            } while (inputSelection!="Q");
                         }
                         else
                         {
@@ -41,14 +74,6 @@ namespace W3af_REST_API
             }
         }
 
-        private static void PrintScan(W3afManager manager)
-        {
-            ScanView.PrintScan(manager);
-        }
-
-        private static void CreateScan(W3afManager manager)
-        {
-            ScanView.CreateScan(manager);
-        }
+       
     }
 }

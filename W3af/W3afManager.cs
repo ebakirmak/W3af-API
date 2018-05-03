@@ -18,40 +18,83 @@ namespace W3af
             }
         }
 
-      /*
-       * Bu fonksiyon tüm taramaların idlerini döndürür.
-       * This function return all scans of ids.
-       */
+ 
+        /// <summary>
+        /// Bu fonksiyon devam eden Taramayı döndürür.
+        /// This function return continued Scan.
+        /// </summary>
+        /// <returns></returns>
         public string GetScans()
         {
             return Session.ExecuteCommand("/scans/","GET",null);
 
         }
 
-        /*
-         * Bu fonksiyon yeni bir tarama oluşturur.
-         * 
-         *
-         */
-         public string CreateScan(string json)
+
+        /// <summary>
+        /// Bu fonksiyon yeni bir tarama oluşturur.
+        ///  This function creates a new Scan.
+        /// </summary>
+        /// <param name="json">String in valid JSON type</param>
+        /// <returns></returns>
+        public string CreateScan(string json)
         {
             return Session.ExecuteCommand("/scans/", "POST", json);
         }
 
-        public void Dispose()
+   
+        /// <summary>
+        /// Bu fonksiyon taramayı siler.
+        /// This function deletes the Scans
+        /// </summary>
+        /// <param name="id">Scan ID</param>
+        /// <returns></returns>
+        public string DeleteScan(string id)
         {
-            //throw new NotImplementedException();
+            return Session.ExecuteCommand("/scans/" + id, "DELETE", null);
+        } 
+
+
+        /// <summary>
+        /// Bu fonksiyon  tarama durumunu getirir. 
+        /// This function gets the Scan Status.
+        /// </summary>
+        /// <param name="id">Scan ID</param>
+        /// <returns></returns>
+        public string GetScanStatus(string id)
+        {
+            return Session.ExecuteCommand("/scans/" + id + "/status","GET",null);
         }
 
+   
+        /// <summary>
+        /// Bu fonksiyon taramayı durdurur.
+        /// This function stops the Scan.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string StopScan(string id)
+        {
+            return Session.ExecuteCommand("/scans/" + id + "/stop", "GET", null);
+        }
 
-        /*
-         * Bu fonksiyon yeni bir tarama oluşturulmasını sağlar.         
-         * 
-         */
-        //public string POSTScanCreate(string json)
-        //{
+        /// <summary>
+        /// Bu fonksiyon taramayı duraklatır.
+        /// This function pauses the Scan.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public string PauseScan(string id)
+        {
+            return Session.ExecuteCommand("/scans/" + id + "/pause", "GET", null);
+        }
 
-        //    return Session.POSTExecuteCommand("/scans", json);
-        //}
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
