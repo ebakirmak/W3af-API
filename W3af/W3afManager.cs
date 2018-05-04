@@ -90,6 +90,29 @@ namespace W3af
         }
 
         /// <summary>
+        /// Bu fonksiyon taramada bulunan zafiyetleri döndürür.
+        /// This function returns fouund Vulnerabilities in Scan
+        /// </summary>
+        /// <param name="id">Scan ID</param>
+        /// <returns></returns>
+        public string GetScanVulnerabilities(string id)
+        {
+            return Session.ExecuteCommand("/scans/" + id + "/kb/","GET",null);
+        }
+
+        /// <summary>
+        /// Bu fonksiyon  bulunan zafiyetin detaylarını döndürür.
+        /// This function returns found vulnerability details.
+        /// </summary>
+        /// <param name="scanId">Scan ID</param>
+        /// <param name="vulnId">Vulnerability ID</param>
+        /// <returns></returns>
+        public string GetScanVulnerabilityDetails(string scanId,string vulnId)
+        {
+            return Session.ExecuteCommand("/scans/" + scanId + "/kb/"+vulnId, "GET", null);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         public void Dispose()

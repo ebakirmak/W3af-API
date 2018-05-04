@@ -20,10 +20,13 @@ namespace W3af
 
         private HttpClient Client;
 
-        /*
-         * Yetkilendirme olmadan giriş yapılır.
-         * UnAuthenticate 
-         */
+     
+        /// <summary>
+        /// Yetkilendirme olmadan giriş yapılır.
+        ///  UnAuthenticate 
+        /// </summary>
+        /// <param name="ip">Server IP Address</param>
+        /// <param name="port">Server Port Address</param>
         public W3afSession(string ip, int port)
         {
             this.IPAddress = IPAddress.Parse(ip);
@@ -31,10 +34,14 @@ namespace W3af
             this.Client = new HttpClient();
         }
 
-        /*
-         * Yetkilendirme yaparak giriş yapılır.
-         * 
-         */
+    
+        /// <summary>
+        /// Yetkilendirme yaparak giriş yapılır.
+        /// </summary>
+        /// <param name="ip">Server IP Address</param>
+        /// <param name="port">Server Port Address</param>
+        /// <param name="username">User Name</param>
+        /// <param name="password">User Password</param>
         public W3afSession(string ip, int port,string username, string password )
         {
             this.Username = username;
@@ -43,10 +50,11 @@ namespace W3af
             this.ServerPort = port;
         }
 
-        /*
-        * HttpClient ilgili sunucuda username ve parola ile basit yetkilendirme (Basic Authentication) işlemi yapılır.
-        * 
-        */
+   
+        /// <summary>
+        /// HttpClient ilgili sunucuda username ve parola ile basit yetkilendirme (Basic Authentication) işlemi yapılır.
+        /// </summary>
+        /// <returns></returns>
         public bool Authenticate()
         {
             try
@@ -64,10 +72,11 @@ namespace W3af
 
         }
 
-        /*
-         * Servisin çalışıp çalışmadığını gösterir.
-         * 
-         */
+   
+        /// <summary>
+        /// Servisin çalışıp çalışmadığını gösterir.
+        /// </summary>
+        /// <returns></returns>
         public bool W3afServiceState()
         {
             try
@@ -104,10 +113,13 @@ namespace W3af
         }
 
 
-        /*
-         * W3af servisinde istenilen komutu çalıştırır.
-         * 
-         */
+        /// <summary>
+        ///  W3af servisinde istenilen komutu çalıştırır.
+        /// </summary>
+        /// <param name="command">Command To Run</param>
+        /// <param name="request">HTTP Request Type (GET/POST/PUT/DELETE)</param>
+        /// <param name="json">Json To Send</param>
+        /// <returns></returns>
         public string ExecuteCommand(string command,string request,string json)
         {
             try
@@ -131,17 +143,23 @@ namespace W3af
             }
         }
 
-        /*
-         *  HttpClient GET/POST/PUT/DELETE isteklerinden biri ile istenilen komutu çalıştırır.
-         * 
-         */
-        private string TaskAsync(IPAddress serviceHost, string servicePort, string command,string json,string request)
+  
+        /// <summary>
+        /// HttpClient GET/POST/PUT/DELETE isteklerinden biri ile istenilen komutu çalıştırır.
+        /// </summary>
+        /// <param name="ip">Server IP Address</param>
+        /// <param name="servicePort">Server Port Address</param>
+        /// <param name="command">Command To Run</param>
+        /// <param name="json">HTTP Request Type (GET/POST/PUT/DELETE)</param>
+        /// <param name="request">Json To Send</param>
+        /// <returns></returns>
+        private string TaskAsync(IPAddress ip, string servicePort, string command,string json,string request)
         {
             try
             {
 
-                Uri serviceUrl = new Uri("http://" + serviceHost + ":" + servicePort + command);
-                //Client.BaseAddress = serviceUrl;
+                Uri serviceUrl = new Uri("http://" + ip + ":" + servicePort + command);
+                Client.BaseAddress = serviceUrl;
 
                 HttpResponseMessage response;
                 if (request == "GET")

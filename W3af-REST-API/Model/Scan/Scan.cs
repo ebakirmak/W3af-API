@@ -1,12 +1,15 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
-using System.Globalization;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace W3af_REST_API.Model
+
+namespace W3af_REST_API.Model.Scan
 {
-    public class ScanCreateResponse
+
+    public class Scan
     {
         [JsonProperty("items")]
         public List<Item> Items { get; set; }
@@ -29,5 +32,4 @@ namespace W3af_REST_API.Model
         [JsonProperty("target_urls")]
         public List<string> TargetUrls { get; set; }
     }
-
 }

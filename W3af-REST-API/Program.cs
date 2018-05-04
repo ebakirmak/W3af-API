@@ -29,11 +29,13 @@ namespace W3af_REST_API
                             string inputSelection = "";
                             do
                             {
-                                Console.Write("Yapmak istediğiniz işlemi seçiniz." +
+                                Console.Write("\nYapmak istediğiniz işlemi seçiniz." +
                                               "\nA: Tarama Oluşturmak İçin" +
                                               "\nB: Tarama ID döndürmek için " +
                                               "\nC: Tarama Durumunu Görüntülemek İçin" +
                                               "\nD: Tarama Silmek İçin" +
+                                              "\nE: Zafiyetleri Görmek İçin" +
+                                              "\nF: Zafiyet Detaylarını Görmek İçin" +
                                               "\nQ: Çıkış İçin" +
                                               "\nSeçiminiz: ");
                               inputSelection = Console.ReadLine();
@@ -50,6 +52,14 @@ namespace W3af_REST_API
                                         break;
                                     case "D":
                                         ScanView.DeleteScan(manager);
+                                        break;
+                                    case "E":
+                                        ScanView.ShowScanVulnerabilities(manager);
+                                        break;
+                                    case "F":
+                                        ScanView.SaveScanVulnerabilitiesAsXML(manager);
+                                        break;
+                                    case "Q":
                                         break;
                                     default:
                                         Console.WriteLine("\n***Hatalı Seçim. Lütfen Seçiminizi kontrol ediniz.***\n");

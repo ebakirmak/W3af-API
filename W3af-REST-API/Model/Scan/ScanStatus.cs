@@ -4,7 +4,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace W3af_REST_API.Model
+namespace W3af_REST_API.Model.Scan
 {
 
 

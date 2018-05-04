@@ -4,15 +4,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml;
 using W3af;
 using W3af_REST_API.Controller;
 using W3af_REST_API.Model;
+using W3af_REST_API.Model.Scan;
+using W3af_REST_API.Model.Vuln;
 
 namespace W3af_REST_API.View
 {
     public static class ScanView
     {
-        private static ScanController scanController { get; set; }
+        private static ScanController ScanController = new ScanController();
+
+
+
 
 
         /// <summary>
@@ -24,10 +30,11 @@ namespace W3af_REST_API.View
         {
             try
             {
-                scanController = new ScanController();
-                ScanCreateResponse scans = scanController.GetScan(manager);
+                ScanController = new ScanController();
+                Scan scans = ScanController.GetScan(manager);
                 if (scans.Items.Count > 0)
                 {
+
                     Console.WriteLine(scans.Items[0].Id);
                 }
                 else
@@ -55,7 +62,7 @@ namespace W3af_REST_API.View
         {
             try
             {
-                ScanCreateResponse scanCreateResponse = scanController.GetScan(manager);
+                Scan scanCreateResponse = ScanController.GetScan(manager);
                 if (scanCreateResponse.Items.Count()>0)
                 {
                     return scanCreateResponse.Items[0].Id.ToString();
@@ -78,18 +85,26 @@ namespace W3af_REST_API.View
         /// <param name="manager"></param>
         public static void CreateScan(W3afManager manager)
         {
+            try
+            {
+                string scanProfile = System.IO.File.ReadAllText(@"C:\Users\emreakirmak\Desktop\fast_scan.txt");
+                System.IO.File.WriteAllText(@"C:\Users\emreakirmak\Desktop\deneme2.txt", scanProfile);
+                //scanProfile = "[profile]\ndescription = A profile\nname = A\n[grep.strange_headers]\n\n[crawl.web_spider]\nonly_forward = False\nfollow_regex = .*\nignore_regex = \n\n"
+                //scanProfile = "[crawl.web_spider]\n[profile]\nname = fast_scan\n[audit.sqli]\n[grep.lang]\n[grep.html_comments]\n[grep.form_autocomplete]\n[grep.dom_xss]";
+                string url = "http://php.testsparker.com";
+                ScanCreate scanCreate = new ScanCreate(scanProfile, url);
+                ScanController = new ScanController();
+                string json = JsonConvert.SerializeObject(scanCreate);
+                string responseJson = ScanController.CreateScan(manager, json);
+                ScanCreateResponse scanCreateResponse = JsonConvert.DeserializeObject<ScanCreateResponse>(responseJson);
+                Console.WriteLine(scanCreateResponse.ID);
+            }
+            catch (Exception ex)
+            {
 
-            string scanProfile = System.IO.File.ReadAllText(@"C:\Users\emreakirmak\Desktop\fast_scan.txt");
-            System.IO.File.WriteAllText(@"C:\Users\emreakirmak\Desktop\deneme2.txt", scanProfile);
-            //scanProfile = "[profile]\ndescription = A profile\nname = A\n[grep.strange_headers]\n\n[crawl.web_spider]\nonly_forward = False\nfollow_regex = .*\nignore_regex = \n\n"
-            scanProfile = "[crawl.web_spider]\n[profile]\nname = fast_scan\n[audit.sqli]\n[grep.lang]\n[grep.html_comments]\n[grep.form_autocomplete]\n[grep.dom_xss]\n[grep.directory_indexing]";
-            string url = "http://ebakirmak.com";
-            ScanCreate scanCreate = new ScanCreate(scanProfile,url);
-            scanController = new ScanController();
-            string json = JsonConvert.SerializeObject(scanCreate);
-            string responseJson = scanController.CreateScan(manager, json);
-            ScanCreateResponse scanCreateResponse = JsonConvert.DeserializeObject<ScanCreateResponse>(responseJson);
-            Console.WriteLine(scanCreateResponse.Items[0].Id);
+                Console.WriteLine("ScanView::CreateScan Exception: " + ex.Message);
+            }
+           
         }
 
 
@@ -102,12 +117,14 @@ namespace W3af_REST_API.View
         {
             try
             {
+                
                 string response = StopScan(manager);
         
                 if (response=="Tarama Durduruldu")
                 {
-                    scanController = new ScanController();
-                    response = scanController.DeleteScan(manager, GetScanID(manager));
+                    ScanController = new ScanController();
+                    string ScanID = GetScanID(manager);
+                    response = ScanController.DeleteScan(manager, ScanID);
                     if(response==null)
                         Console.WriteLine("***\nTarama Durdurulamadı.\n***");
                     else
@@ -139,9 +156,8 @@ namespace W3af_REST_API.View
         public static void GetScanStatus(W3afManager manager)
         {
             try
-            {
-                scanController = new ScanController();
-                ScanStatus scanStatus = scanController.GetScanStatus(manager, GetScanID(manager));
+            {              
+                ScanStatus scanStatus = ScanController.GetScanStatus(manager, GetScanID(manager));
                 if (scanStatus != null)
                     Console.WriteLine(scanStatus.IsRunning);
                 else
@@ -164,14 +180,14 @@ namespace W3af_REST_API.View
         {
             try
             {
-                scanController = new ScanController();
+               
                 string id = GetScanID(manager);
                 if (id == null)
                     return "Tarama Yok";
-                ScanStatus scanStatus = scanController.GetScanStatus(manager, id);
+                ScanStatus scanStatus = ScanController.GetScanStatus(manager, id);
              
 
-                string jsonResponse = scanController.StopScan(manager, GetScanID(manager));               
+                string jsonResponse = ScanController.StopScan(manager, GetScanID(manager));               
                 if (scanStatus.IsRunning == false || jsonResponse != null)
                 {
                     return "Tarama Durduruldu";
@@ -194,14 +210,98 @@ namespace W3af_REST_API.View
         public static void PauseScan(W3afManager manager)
         {
             try
-            {
-                scanController = new ScanController();
-                scanController.PauseScan(manager, GetScanID(manager));
+            {              
+                ScanController.PauseScan(manager, GetScanID(manager));
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ScanView::PauseScan Exception: " + ex.Message);
                
+            }
+        }
+
+        /// <summary>
+        /// Bu fonksiyon Taramada bulunan zafiyetleri gösterir.
+        /// This function shows vulnerabilities found in Scan.
+        /// </summary>
+        /// <param name="manager"></param>
+        public static void ShowScanVulnerabilities(W3afManager manager)
+        {
+            try
+            {
+                string id = GetScanID(manager);
+                if (id != null)
+                {
+                    Vulnerabilities vuln = ScanController.GetScanVulnerabilities(manager, id);
+                    foreach (var item in vuln.Items)
+                    {
+                        Console.WriteLine("\nID: " + item.Id +
+                                          "\nName: " + item.Name +
+                                          "\nHref: " + item.Href +
+                                          "\nURL: " + item.Url);
+
+                    }
+                }
+                else
+                    Console.WriteLine("\n\n***Tarama Yok***\n");
+              
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nScanView::howScanVulnerabilities\n Exception:" + ex.Message);
+            }
+        }
+        /// <summary>
+        /// Bu fonksiyon taramada bulunan zafiyet sayısını döndürür.
+        /// This function returns found vulnerability count.
+        /// </summary>
+        /// <param name="manager">W3afManager Instance</param>
+        /// <returns></returns>
+        private static int GetScanVulnerabilitiesCount(W3afManager manager)
+        {
+            try
+            {
+                int VulnerabilityCount = 0;
+                string id = GetScanID(manager);
+                if (id != null)
+                {
+                    Vulnerabilities vuln = ScanController.GetScanVulnerabilities(manager, id);
+                    foreach (var item in vuln.Items)
+                    {
+                   
+                        VulnerabilityCount = Convert.ToInt32(item.Id);
+                    }
+                }
+                else
+                    Console.WriteLine("\n\n***Tarama Yok***\n");
+
+                return VulnerabilityCount;
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("\nScanView::howScanVulnerabilities\n Exception:" + ex.Message);
+                return 0;
+            }
+        }
+
+        /// <summary>
+        /// Bu fonksiyon Taramada bulunan zafiyetleri XML olarak kaydeder.
+        /// This function saves as XML found vulnerability in Scan.
+        /// </summary>
+        /// <param name="manager">W3afManager Instance</param>
+        public static void SaveScanVulnerabilitiesAsXML(W3afManager manager)
+        {
+            try
+            {
+                string jsonResponse = ScanController.GetScanVulnerabilitiesDetails(manager, GetScanID(manager), GetScanVulnerabilitiesCount(manager));
+                XmlDocument xmlDocument = JsonConvert.DeserializeXmlNode(jsonResponse);
+
+            }
+            catch (Exception ex)
+            {
+
+                throw;
             }
         }
     }

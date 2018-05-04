@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace W3af_REST_API.Model
+namespace W3af_REST_API.Model.Scan
 {
     public class ScanCreate
     {
