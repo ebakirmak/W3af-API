@@ -15,17 +15,14 @@ namespace W3af_REST_API
         {
             try
             {
-                using (W3afSession session = new W3afSession("172.17.6.150", 443, "ebakirmak", "1234"))
+                ScanView.SetIPAndPort();
+                using (W3afSession session = new W3afSession(ScanView.IP, ScanView.Port, ScanView.Username, ScanView.Password))
                 {
                     using (W3afManager manager = new W3afManager(session))
                     {
                         if (session.W3afServiceState())
                         {
-
-
-
-
-
+                            
                             string inputSelection = "";
                             do
                             {
@@ -35,10 +32,10 @@ namespace W3af_REST_API
                                               "\nC: Tarama Durumunu Görüntülemek İçin" +
                                               "\nD: Tarama Silmek İçin" +
                                               "\nE: Zafiyetleri Görmek İçin" +
-                                              "\nF: Zafiyet Detaylarını Görmek İçin" +
+                                              "\nF: Zafiyetleri XML Olarak Masaüstüne Kaydet" +
                                               "\nQ: Çıkış İçin" +
                                               "\nSeçiminiz: ");
-                              inputSelection = Console.ReadLine();
+                              inputSelection = Console.ReadLine().ToUpper();
                                 switch (inputSelection)
                                 {
                                     case "A":

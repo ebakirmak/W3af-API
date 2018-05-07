@@ -1,14 +1,11 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Xml;
 using W3af;
 using W3af_REST_API.Model;
 using W3af_REST_API.Model.Scan;
 using W3af_REST_API.Model.Vuln;
-using W3af_REST_API.View;
 
 namespace W3af_REST_API.Controller
 {
@@ -176,14 +173,20 @@ namespace W3af_REST_API.Controller
         public string GetScanVulnerabilitiesDetails(W3afManager manager, string scanId, int lastVulnerability)
         {
             //List<VulnerabilityDetails> vulnerabilitiesDetails = new List<VulnerabilityDetails>();
-            string jsonResponse="";
-            for (int i = 0; i < lastVulnerability; i++)
+           
+            string jsonResponse = "[";
+            for (int i = 0; i <= lastVulnerability; i++)
             {
-              jsonResponse  += manager.GetScanVulnerabilityDetails(scanId, i.ToString());
+                if(i!=lastVulnerability)
+                    jsonResponse += manager.GetScanVulnerabilityDetails(scanId, i.ToString()) +",";
+                else
+                    jsonResponse += manager.GetScanVulnerabilityDetails(scanId, i.ToString());
                 //VulnerabilityDetails vulnerabilitiy = JsonConvert.DeserializeObject<VulnerabilityDetails>(jsonResponse);
                 //vulnerabilitiesDetails.Add(vulnerabilitiy);
-            }
+            }      
+            jsonResponse += "]";
 
+    
             //return vulnerabilitiesDetails;
             return jsonResponse;
         }

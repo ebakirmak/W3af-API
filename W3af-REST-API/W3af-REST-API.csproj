@@ -63,7 +63,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Model\Policys\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\W3af\W3af.csproj">
       <Project>{43175335-9583-42E9-B52A-74220D774BB5}</Project>

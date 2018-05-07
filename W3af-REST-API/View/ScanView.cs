@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -18,6 +19,62 @@ namespace W3af_REST_API.View
         private static ScanController ScanController = new ScanController();
 
 
+        //Server IP
+        public static string IP { get; set; }
+        //Server Port
+        public static int Port { get; set; }
+        //Username
+        public static string Username { get; set; }
+        //Password
+        public static string Password { get; set; }
+
+        /// <summary>
+        /// Bu fonksiyon ip ve port numaralarını ayarlar.
+        /// This function sets up ip and port number.
+        /// </summary>
+        public static void SetIPAndPort()
+        {
+            do
+            {
+                try
+                {
+
+                    Console.Write("IP Adresi ve Port Adresini değiştirmek istiyor musunuz?(E/H)");
+                    string selected = Console.ReadLine().ToUpper();
+                    if (selected == "E")
+                    {
+                        Console.Write("IP Adresini Giriniz: ");
+                        IP = Console.ReadLine();
+
+                        Console.Write("Port Numarasını Giriniz: ");
+                        Port = Convert.ToInt32(Console.ReadLine());
+
+                        Console.Write("Username Giriniz: ");
+                        Username = Console.ReadLine();
+
+                        Console.Write("Parola Giriniz: ");
+                        Password = Console.ReadLine();
+                        break;
+                    }
+                    else if (selected == "H")
+                    {
+                        IP = "172.17.6.150";
+                        Port = 443;
+                        Username = "ebakirmak";
+                        Password = "1234";
+                        break;
+                    }
+
+                }
+                catch (FormatException e)
+                {
+                    Console.WriteLine("Input format biçimi hatalı. Kontrol ediniz." + e.Message);
+                    //throw;
+                }
+            } while (true);
+
+
+        }
 
 
 
@@ -35,7 +92,7 @@ namespace W3af_REST_API.View
                 if (scans.Items.Count > 0)
                 {
 
-                    Console.WriteLine(scans.Items[0].Id);
+                    Console.WriteLine("Devam Eden Tarama ID: " + scans.Items[0].Id);
                 }
                 else
                 {
@@ -87,17 +144,27 @@ namespace W3af_REST_API.View
         {
             try
             {
-                string scanProfile = System.IO.File.ReadAllText(@"C:\Users\emreakirmak\Desktop\fast_scan.txt");
-                System.IO.File.WriteAllText(@"C:\Users\emreakirmak\Desktop\deneme2.txt", scanProfile);
-                //scanProfile = "[profile]\ndescription = A profile\nname = A\n[grep.strange_headers]\n\n[crawl.web_spider]\nonly_forward = False\nfollow_regex = .*\nignore_regex = \n\n"
-                //scanProfile = "[crawl.web_spider]\n[profile]\nname = fast_scan\n[audit.sqli]\n[grep.lang]\n[grep.html_comments]\n[grep.form_autocomplete]\n[grep.dom_xss]";
-                string url = "http://php.testsparker.com";
-                ScanCreate scanCreate = new ScanCreate(scanProfile, url);
+                //Profile Name is scan settings namely it is policy. Profile Adı tarama ayarlarıdır yani policydir.
+                string scanProfileName = SelectProfile();
+                string scanProfile = System.IO.File.ReadAllText(@"C:\Users\emreakirmak\Desktop\W3af-API\W3af-REST-API\Model\Policys\"+scanProfileName);
+                string targetURL = SelectTargetURL();
+
+
+                ScanCreate scanCreate = new ScanCreate(scanProfile, targetURL);
                 ScanController = new ScanController();
+
+
                 string json = JsonConvert.SerializeObject(scanCreate);
                 string responseJson = ScanController.CreateScan(manager, json);
+
+                if(responseJson == null)
+                {
+                    Console.WriteLine("Sistemde herhangi bir tarama mevcut ise öncelikle onu siliniz.");
+                    return;
+                }
+
                 ScanCreateResponse scanCreateResponse = JsonConvert.DeserializeObject<ScanCreateResponse>(responseJson);
-                Console.WriteLine(scanCreateResponse.ID);
+                Console.WriteLine("Oluşturulan Tarama ID: " + scanCreateResponse.ID);
             }
             catch (Exception ex)
             {
@@ -105,6 +172,40 @@ namespace W3af_REST_API.View
                 Console.WriteLine("ScanView::CreateScan Exception: " + ex.Message);
             }
            
+        }
+
+        /// <summary>
+        /// Bu fonksiyon tarama profillerini (policy) listeler.
+        /// This function lists scan profiles (policy).
+        /// </summary>
+        /// <returns></returns>
+        private static string SelectProfile()
+        {
+            string[] w3afFiles = Directory.GetFiles(@"..\\..\\Model\\Policys\\", "*.pw3af")
+                                     .Select(Path.GetFileName)
+                                     .ToArray();
+            int counter = 1;
+            Console.Write("\n");
+            foreach (var item in w3afFiles)
+            {
+                Console.WriteLine(counter + ") " + item.ToString());
+                counter += 1;
+            }
+
+            Console.Write("\n Policy Seçiniz: ");
+            int policyId = Convert.ToInt32(Console.ReadLine());
+            return w3afFiles[policyId-1];
+        }
+
+        /// <summary>
+        /// Bu fonksiyon taranacak hedefi seçer.
+        /// This function selects scan target.
+        /// </summary>
+        /// <returns></returns>
+        private static string SelectTargetURL()
+        {
+            Console.Write("Taramak istediğiniz hedef:");
+            return Console.ReadLine().ToLower();
         }
 
 
@@ -158,9 +259,11 @@ namespace W3af_REST_API.View
             try
             {              
                 ScanStatus scanStatus = ScanController.GetScanStatus(manager, GetScanID(manager));
-                if (scanStatus != null)
-                    Console.WriteLine(scanStatus.IsRunning);
-                else
+                if (scanStatus != null && scanStatus.IsRunning.ToString().ToLower() == "true")
+                    Console.WriteLine("Tarama Devam Ediyor.");
+                else if (scanStatus != null && scanStatus.IsRunning.ToString().ToLower() == "false")
+                    Console.WriteLine("Tarama Sona Erdi.");
+                else if (scanStatus==null)
                     Console.WriteLine("***Gösterilecek Tarama Yok.***");
             }
             catch (Exception ex)
@@ -171,12 +274,16 @@ namespace W3af_REST_API.View
           
         }
 
-        /// <summary>
-        /// Bu fonksiyon Taramayı durdurur.
-        /// This function stops the Scan.
-        /// </summary>
-        /// <param name="manager">W3afManager Object</param>
-        public static string StopScan(W3afManager manager)
+        
+
+
+
+    /// <summary>
+    /// Bu fonksiyon Taramayı durdurur.
+    /// This function stops the Scan.
+    /// </summary>
+    /// <param name="manager">W3afManager Object</param>
+    public static string StopScan(W3afManager manager)
         {
             try
             {
@@ -294,14 +401,18 @@ namespace W3af_REST_API.View
         {
             try
             {
-                string jsonResponse = ScanController.GetScanVulnerabilitiesDetails(manager, GetScanID(manager), GetScanVulnerabilitiesCount(manager));
-                XmlDocument xmlDocument = JsonConvert.DeserializeXmlNode(jsonResponse);
-
+                string scanID = GetScanID(manager);
+                int vulnCount = GetScanVulnerabilitiesCount(manager);
+                string jsonResponse = ScanController.GetScanVulnerabilitiesDetails(manager, scanID , vulnCount);
+                XmlDocument xmlDocument = JsonConvert.DeserializeXmlNode("{\"Row\":" + jsonResponse + "}", "root");
+                string strPath = Environment.GetFolderPath(
+                          System.Environment.SpecialFolder.DesktopDirectory);
+                System.IO.File.WriteAllText(strPath + "\\w3af.xml",xmlDocument.InnerXml);
+                Console.WriteLine("Masaüstüne Kaydedildi.");
             }
             catch (Exception ex)
             {
-
-                throw;
+               Console.WriteLine("ScanView::SaveScanVulnerabiliesAsXML Exception " + ex.Message);
             }
         }
     }
