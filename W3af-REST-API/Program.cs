@@ -16,7 +16,7 @@ namespace W3af_REST_API
             try
             {
                 ScanView.SetIPAndPort();
-                using (W3afSession session = new W3afSession(ScanView.IP, ScanView.Port, ScanView.Username, ScanView.Password))
+                using (W3afSession session = new W3afSession(ScanView.IP, ScanView.Port, ScanView.Username, ScanView.Password,true))
                 {
                     using (W3afManager manager = new W3afManager(session))
                     {

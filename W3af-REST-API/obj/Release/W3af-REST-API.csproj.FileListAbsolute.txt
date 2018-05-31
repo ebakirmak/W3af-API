@@ -1,0 +1,13 @@
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\bin\Release\W3af-REST-API.exe.config
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\bin\Release\W3af-REST-API.exe
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\bin\Release\W3af-REST-API.pdb
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\bin\Release\Json.NET.Web.dll
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\bin\Release\Newtonsoft.Json.dll
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\bin\Release\W3af.dll
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\bin\Release\W3af.pdb
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\bin\Release\Newtonsoft.Json.xml
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\obj\Release\W3af-REST-API.csprojResolveAssemblyReference.cache
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\obj\Release\W3af-REST-API.csproj.CoreCompileInputs.cache
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\obj\Release\W3af-REST-API.csproj.CopyComplete
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\obj\Release\W3af-REST-API.exe
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af-REST-API\obj\Release\W3af-REST-API.pdb

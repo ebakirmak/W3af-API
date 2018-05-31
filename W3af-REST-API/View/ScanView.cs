@@ -27,6 +27,8 @@ namespace W3af_REST_API.View
         public static string Username { get; set; }
         //Password
         public static string Password { get; set; }
+        //Certificate
+        public static bool Certificate { get; set; }
 
         /// <summary>
         /// Bu fonksiyon ip ve port numaralarını ayarlar.
@@ -54,14 +56,20 @@ namespace W3af_REST_API.View
 
                         Console.Write("Parola Giriniz: ");
                         Password = Console.ReadLine();
+
+                        Console.Write("Bağlantı Https üzerinden mi? (E/H): ");
+                        string certificate = Console.ReadLine();
+                        Certificate = certificate.ToUpper() == "E" ? true : false;
+
                         break;
                     }
                     else if (selected == "H")
                     {
-                        IP = "172.17.6.150";
-                        Port = 443;
-                        Username = "ebakirmak";
-                        Password = "1234";
+                        IP = "172.17.7.221";
+                        Port = 5000;
+                        Username = "admin";
+                        Password = "secret";
+                        Certificate = true;
                         break;
                     }
 
@@ -142,11 +150,16 @@ namespace W3af_REST_API.View
         /// <param name="manager"></param>
         public static void CreateScan(W3afManager manager)
         {
+
+            string currentDir = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             try
             {
                 //Profile Name is scan settings namely it is policy. Profile Adı tarama ayarlarıdır yani policydir.
                 string scanProfileName = SelectProfile();
-                string scanProfile = System.IO.File.ReadAllText(@"C:\Users\emreakirmak\Desktop\W3af-API\W3af-REST-API\Model\Policys\"+scanProfileName);
+                Console.WriteLine(scanProfileName);
+            
+
+                string scanProfile = System.IO.File.ReadAllText(currentDir+"\\Model\\Policys\\"+scanProfileName);
                 string targetURL = SelectTargetURL();
 
 
@@ -181,20 +194,29 @@ namespace W3af_REST_API.View
         /// <returns></returns>
         private static string SelectProfile()
         {
-            string[] w3afFiles = Directory.GetFiles(@"..\\..\\Model\\Policys\\", "*.pw3af")
-                                     .Select(Path.GetFileName)
-                                     .ToArray();
-            int counter = 1;
-            Console.Write("\n");
-            foreach (var item in w3afFiles)
+            try
             {
-                Console.WriteLine(counter + ") " + item.ToString());
-                counter += 1;
-            }
+                string[] w3afFiles = Directory.GetFiles(@"..\\..\\Model\\Policys\\", "*.pw3af")
+                                   .Select(Path.GetFileName)
+                                   .ToArray();
+                int counter = 1;
+                Console.Write("\n");
+                foreach (var item in w3afFiles)
+                {
+                    Console.WriteLine(counter + ") " + item.ToString());
+                    counter += 1;
+                }
 
-            Console.Write("\n Policy Seçiniz: ");
-            int policyId = Convert.ToInt32(Console.ReadLine());
-            return w3afFiles[policyId-1];
+                Console.Write("\n Policy Seçiniz: ");
+                int policyId = Convert.ToInt32(Console.ReadLine());
+                return w3afFiles[policyId - 1];
+            }
+            catch (Exception ex)  
+            {
+                Console.WriteLine("Scanview::SelectProfile Exception: " + ex.Message);
+                return null;
+            }
+          
         }
 
         /// <summary>

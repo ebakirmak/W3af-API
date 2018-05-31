@@ -18,6 +18,8 @@ namespace W3af
 
         private int ServerPort { get; set; }
 
+        private bool Https { get; set; }
+
         private HttpClient Client;
 
      
@@ -31,6 +33,7 @@ namespace W3af
         {
             this.IPAddress = IPAddress.Parse(ip);
             this.ServerPort = port;
+          
             this.Client = new HttpClient();
         }
 
@@ -42,12 +45,13 @@ namespace W3af
         /// <param name="port">Server Port Address</param>
         /// <param name="username">User Name</param>
         /// <param name="password">User Password</param>
-        public W3afSession(string ip, int port,string username, string password )
+        public W3afSession(string ip, int port,string username, string password, bool https)
         {
             this.Username = username;
             this.Password = password;
             this.IPAddress = IPAddress.Parse(ip);
             this.ServerPort = port;
+            this.Https = https;
         }
 
    
@@ -57,12 +61,15 @@ namespace W3af
         /// <returns></returns>
         public bool Authenticate()
         {
+            /* Https bağlantıları için */
+            ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
             try
             {
                 this.Client = new HttpClient();
-                var byteArray = Encoding.ASCII.GetBytes(this.Username+":"+this.Password);
+                //var byteArray = Encoding.ASCII.GetBytes(this.Username+":"+this.Password);
+                var byteArray = Encoding.ASCII.GetBytes("admin:secret");
                 Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
-                return true;
+                    return true;
             }
             catch (Exception ex)
             {
@@ -83,8 +90,12 @@ namespace W3af
             {
                 if (Authenticate())
                 {
+                    Uri serviceUrl;
+                    if (this.Https)
+                        serviceUrl = new Uri("https://" + this.IPAddress + ":" + this.ServerPort +   "/scans/" );
+                    else
+                        serviceUrl = new Uri("http://" + this.IPAddress + ":" + this.ServerPort + "/scans/");
 
-                    Uri serviceUrl = new Uri("http://" + this.IPAddress + ":" + this.ServerPort + "/scans/");
                     Client.BaseAddress = serviceUrl;
                     var response = Client.GetAsync(serviceUrl).Result;
 
@@ -157,8 +168,13 @@ namespace W3af
         {
             try
             {
+                Uri serviceUrl;
+                if (this.Https)
+                    serviceUrl = new Uri("https://" + ip + ":" + servicePort + command);
+                else
+                    serviceUrl = new Uri("http://" + ip + ":" + servicePort + command);
 
-                Uri serviceUrl = new Uri("http://" + ip + ":" + servicePort + command);
+        
                 Client.BaseAddress = serviceUrl;
 
                 HttpResponseMessage response;

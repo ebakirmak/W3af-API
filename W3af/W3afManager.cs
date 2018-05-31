@@ -117,7 +117,7 @@ namespace W3af
         /// </summary>
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
     }
 }

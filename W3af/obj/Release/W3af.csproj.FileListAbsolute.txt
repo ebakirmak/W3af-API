@@ -1,0 +1,6 @@
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af\bin\Release\W3af.dll
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af\bin\Release\W3af.pdb
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af\obj\Release\W3af.csprojResolveAssemblyReference.cache
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af\obj\Release\W3af.csproj.CoreCompileInputs.cache
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af\obj\Release\W3af.dll
+C:\Users\emreakirmak\Desktop\Emre\Projects\W3af-all\W3af-API\W3af\obj\Release\W3af.pdb
