@@ -65,8 +65,8 @@ namespace W3af_REST_API.View
                     }
                     else if (selected == "H")
                     {
-                        IP = "172.17.7.221";
-                        Port = 5000;
+                        IP = "172.17.6.50";
+                        Port = 4444;
                         Username = "admin";
                         Password = "secret";
                         Certificate = true;
@@ -77,7 +77,6 @@ namespace W3af_REST_API.View
                 catch (FormatException e)
                 {
                     Console.WriteLine("Input format biçimi hatalı. Kontrol ediniz." + e.Message);
-                    //throw;
                 }
             } while (true);
 
@@ -157,7 +156,10 @@ namespace W3af_REST_API.View
                 //Profile Name is scan settings namely it is policy. Profile Adı tarama ayarlarıdır yani policydir.
                 string scanProfileName = SelectProfile();
                 Console.WriteLine(scanProfileName);
-            
+
+                //Web Site Login Page, Login username and Login Password.
+                EditPolicyLoginInformation(currentDir, scanProfileName, "http://172.17.6.52:8000/login.php","admin","password");
+
 
                 string scanProfile = System.IO.File.ReadAllText(currentDir+"\\Model\\Policys\\"+scanProfileName);
                 string targetURL = SelectTargetURL();
@@ -186,6 +188,37 @@ namespace W3af_REST_API.View
             }
            
         }
+
+        private static void EditPolicyLoginInformation(string currentDir, string scanProfileName,string domain, string username, string password)
+        {
+            try
+            {      
+                string[] arrLine = File.ReadAllLines(currentDir+"\\Model\\Policys\\" + scanProfileName);
+                string attribute = "";
+                for (int i = 0; i < arrLine.Length; i++)
+                {
+                    attribute = arrLine[i].Split('=')[0].Trim().ToLower();
+                    if (attribute == "basic_auth_domain")
+                        arrLine[i] = attribute + " = " + domain;                                       
+
+                    if (attribute == "basic_auth_user")
+                        arrLine[i] = attribute + " = " + username;
+
+                    if (attribute == "basic_auth_passwd")
+                        arrLine[i] = attribute + " = " + password;
+
+                }
+                File.WriteAllLines(currentDir + "\\Model\\Policys\\" + scanProfileName, arrLine);
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("ScanView::EditPolicyLoginInformation: " + ex.Message);
+            }
+           
+
+        }
+
 
         /// <summary>
         /// Bu fonksiyon tarama profillerini (policy) listeler.

@@ -61,11 +61,18 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Model\Policys\audit_high_risk.pw3af" />
+    <None Include="Model\Policys\bruteforce.pw3af" />
+    <None Include="Model\Policys\empty_profile.pw3af" />
+    <None Include="Model\Policys\fast_scan.pw3af" />
+    <None Include="Model\Policys\full_audit.pw3af" />
+    <None Include="Model\Policys\full_audit_spider_man.pw3af" />
+    <None Include="Model\Policys\OWASP_TOP10.pw3af" />
+    <None Include="Model\Policys\sitemap.pw3af" />
+    <None Include="Model\Policys\web_infrastructure.pw3af" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\Policys\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\W3af\W3af.csproj">
       <Project>{43175335-9583-42E9-B52A-74220D774BB5}</Project>
