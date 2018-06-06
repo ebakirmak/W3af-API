@@ -1,3 +1,7 @@
+[profile]
+description = The Open Web Application Security Project (OWASP) is a worldwide free and open community focused on improving the security of application software. OWASP searched for and published the ten most common security flaws. This profile search for this top 10 security flaws. For more information about the security flaws: http://www.owasp.org/index.php/OWASP_Top_Ten_Project .
+name = OWASP_TOP10
+
 [crawl.phpinfo]
 
 [audit.frontpage]
@@ -188,9 +192,7 @@ use_colors = True
 [audit.xss]
 persistent_xss = True
 
-[profile]
-description = The Open Web Application Security Project (OWASP) is a worldwide free and open community focused on improving the security of application software. OWASP searched for and published the ten most common security flaws. This profile search for this top 10 security flaws. For more information about the security flaws: http://www.owasp.org/index.php/OWASP_Top_Ten_Project .
-name = OWASP_TOP10
+
 
 [grep.html_comments]
 
@@ -208,7 +210,7 @@ url_parameter =
 never_404 = 
 headers_file = 
 proxy_address = 
-basic_auth_domain = 
+basic_auth_domain = http://172.17.6.52:8000/login.php
 always_404 = 
 max_http_retries = 2
 ntlm_auth_user = 
@@ -216,8 +218,8 @@ ntlm_auth_passwd =
 ignore_session_cookies = False
 timeout = 0
 user_agent = w3af.org
-basic_auth_user = 
-basic_auth_passwd = 
+basic_auth_user = admin
+basic_auth_passwd = password
 string_match_404 = 
 cookie_jar_file = 
 ntlm_auth_domain = 

@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -65,8 +66,8 @@ namespace W3af_REST_API.View
                     }
                     else if (selected == "H")
                     {
-                        IP = "172.17.6.50";
-                        Port = 4444;
+                        IP = "172.17.6.4";
+                        Port = 5000;
                         Username = "admin";
                         Password = "secret";
                         Certificate = true;
@@ -158,7 +159,7 @@ namespace W3af_REST_API.View
                 Console.WriteLine(scanProfileName);
 
                 //Web Site Login Page, Login username and Login Password.
-                EditPolicyLoginInformation(currentDir, scanProfileName, "http://172.17.6.52:8000/login.php","admin","password");
+                EditPolicyLoginInformation(currentDir, scanProfileName);
 
 
                 string scanProfile = System.IO.File.ReadAllText(currentDir+"\\Model\\Policys\\"+scanProfileName);
@@ -189,7 +190,7 @@ namespace W3af_REST_API.View
            
         }
 
-        private static void EditPolicyLoginInformation(string currentDir, string scanProfileName,string domain, string username, string password)
+        private static void EditPolicyLoginInformation(string currentDir, string scanProfileName)
         {
             try
             {      
@@ -199,13 +200,28 @@ namespace W3af_REST_API.View
                 {
                     attribute = arrLine[i].Split('=')[0].Trim().ToLower();
                     if (attribute == "basic_auth_domain")
-                        arrLine[i] = attribute + " = " + domain;                                       
+                    {
+                        Console.Write("Login Sayfa Giriniz: ");
+                        string domain = Console.ReadLine();
+                        arrLine[i] = attribute + " = " + domain;
+                    }
+                                                              
 
                     if (attribute == "basic_auth_user")
+                    {
+                        Console.Write("Username Giriniz: ");
+                        string username = Console.ReadLine();
                         arrLine[i] = attribute + " = " + username;
+                    }
+                  
 
                     if (attribute == "basic_auth_passwd")
+                    {
+                        Console.Write("Password Giriniz: ");
+                        string password = Console.ReadLine();
                         arrLine[i] = attribute + " = " + password;
+                    }
+                        
 
                 }
                 File.WriteAllLines(currentDir + "\\Model\\Policys\\" + scanProfileName, arrLine);
@@ -229,14 +245,30 @@ namespace W3af_REST_API.View
         {
             try
             {
-                string[] w3afFiles = Directory.GetFiles(@"..\\..\\Model\\Policys\\", "*.pw3af")
+                //Get File Name
+                string[]w3afFiles = Directory.GetFiles(@"..\\..\\Model\\Policys\\", "*.pw3af")
                                    .Select(Path.GetFileName)
                                    .ToArray();
+                List<Tuple<String, String>> listFiles = new List<Tuple<String, String>>();
+                string[] arrLine = null;
+                foreach (var file in w3afFiles)
+                {
+                   arrLine = File.ReadAllLines(@"..\\..\\Model\\Policys\\" + file );
+                    if (arrLine[1].Contains("description"))
+                    {
+                        Tuple<String, String> tuple = new Tuple<String, String>(file, arrLine[1]);
+                        listFiles.Add(tuple);
+                    }
+                  
+                }
+               
+              
+
                 int counter = 1;
                 Console.Write("\n");
-                foreach (var item in w3afFiles)
+                foreach (var item in listFiles)
                 {
-                    Console.WriteLine(counter + ") " + item.ToString());
+                    Console.WriteLine(counter + ") " + item.Item1.ToString() + ": " + item.Item2.ToString());
                     counter += 1;
                 }
 
@@ -312,10 +344,19 @@ namespace W3af_REST_API.View
         public static void GetScanStatus(W3afManager manager)
         {
             try
-            {              
-                ScanStatus scanStatus = ScanController.GetScanStatus(manager, GetScanID(manager));
+            {
+                string scanId = GetScanID(manager);
+                ScanStatus scanStatus = ScanController.GetScanStatus(manager, scanId);
                 if (scanStatus != null && scanStatus.IsRunning.ToString().ToLower() == "true")
-                    Console.WriteLine("Tarama Devam Ediyor.");
+                {
+                    Console.WriteLine("Tarama Devam Ediyor. \n" 
+                                        + scanStatus.IsRunning.ToString() + "\n"    +
+                                        "Status: " + scanStatus.Rpm.ToString() + "\n" +
+                                        "Audit: "  + scanStatus.CurrentRequest.Audit +"\n" +
+                                        "Crawl: "  + scanStatus.CurrentRequest.Crawl +"\n\n");
+
+                }
+                    
                 else if (scanStatus != null && scanStatus.IsRunning.ToString().ToLower() == "false")
                     Console.WriteLine("Tarama Sona Erdi.");
                 else if (scanStatus==null)

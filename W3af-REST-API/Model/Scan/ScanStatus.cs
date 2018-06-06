@@ -13,8 +13,8 @@ namespace W3af_REST_API.Model.Scan
         //[JsonProperty("active_plugin")]
         //public ActivePlugin ActivePlugin { get; set; }
 
-        //[JsonProperty("current_request")]
-        //public ActivePlugin CurrentRequest { get; set; }
+        [JsonProperty("current_request")]
+        public CurrentRequest CurrentRequest { get; set; }
 
         //[JsonProperty("eta")]
         //public ActivePlugin Eta { get; set; }
@@ -38,13 +38,22 @@ namespace W3af_REST_API.Model.Scan
         public string Status { get; set; }
     }
 
-    public partial class ActivePlugin
+    //public partial class ActivePlugin
+    //{
+    //    [JsonProperty("audit")]
+    //    public AuditUnion Audit { get; set; }
+
+    //    [JsonProperty("crawl")]
+    //    public AuditUnion Crawl { get; set; }
+    //}
+
+    public partial class CurrentRequest
     {
         [JsonProperty("audit")]
-        public AuditUnion Audit { get; set; }
+        public string Audit { get; set; }
 
         [JsonProperty("crawl")]
-        public AuditUnion Crawl { get; set; }
+        public string Crawl { get; set; }
     }
 
     public partial class AuditClass

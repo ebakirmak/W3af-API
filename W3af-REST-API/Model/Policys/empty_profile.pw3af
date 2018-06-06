@@ -1,3 +1,7 @@
+[profile]
+description = This is an empty profile that you can use to start a new configuration from.
+name = empty_profile
+
 [misc-settings]
 form_fuzzing_mode = tmb
 fuzzed_files_extension = gif
@@ -16,14 +20,12 @@ target =
 verbose = True
 use_colors = True
 
-[profile]
-description = This is an empty profile that you can use to start a new configuration from.
-name = empty_profile
+
 
 [http-settings]
 proxy_port = 8080
 url_parameter = 
-basic_auth_domain = 
+basic_auth_domain = http://172.17.6.52:8000/login.php
 proxy_address = 
 headers_file = 
 always_404 = 
@@ -35,6 +37,6 @@ ignore_session_cookies = False
 cookie_jar_file = 
 timeout = 0
 user_agent = w3af.org
-basic_auth_user = 
-basic_auth_passwd = 
+basic_auth_user = admin
+basic_auth_passwd = password
 string_match_404 = 

@@ -178,9 +178,9 @@ msf_location = /opt/metasploit3/bin/
 [http-settings]
 timeout = 0
 headers_file = 
-basic_auth_user = 
-basic_auth_passwd = 
-basic_auth_domain = 
+basic_auth_user = admin
+basic_auth_passwd = password
+basic_auth_domain = http://172.17.6.52:8000/login.php
 ntlm_auth_domain = 
 ntlm_auth_user = 
 ntlm_auth_passwd = 

@@ -1,3 +1,7 @@
+[profile]
+description = Perform a fast scan of the target site, using only a few discovery plugins and the fastest audit plugins.
+name = fast_scan
+
 [grep.strange_headers]
 
 [grep.svn_users]
@@ -51,9 +55,7 @@ persistent_xss = True
 
 [grep.hash_analysis]
 
-[profile]
-name = fast_scan
-description = Perform a fast scan of the target site, using only a few discovery plugins and the fastest audit plugins.
+
 
 [grep.lang]
 
@@ -103,7 +105,7 @@ ignore_session_cookies = False
 timeout = 0
 user_agent = w3af.org
 basic_auth_user = admin
-basic_auth_passwd = passw2ord
+basic_auth_passwd = password
 string_match_404 = 
 cookie_jar_file = 
 ntlm_auth_domain = 
