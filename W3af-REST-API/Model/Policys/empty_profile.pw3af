@@ -25,7 +25,7 @@ use_colors = True
 [http-settings]
 proxy_port = 8080
 url_parameter = 
-basic_auth_domain = http://172.17.6.52:8000/login.php
+basic_auth_domain = http://testphp.vulnweb.com
 proxy_address = 
 headers_file = 
 always_404 = 

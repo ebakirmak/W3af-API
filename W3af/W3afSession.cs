@@ -67,7 +67,7 @@ namespace W3af
             {
                 this.Client = new HttpClient();
                 //var byteArray = Encoding.ASCII.GetBytes(this.Username+":"+this.Password);
-                var byteArray = Encoding.ASCII.GetBytes("admin:secret");
+                var byteArray = Encoding.ASCII.GetBytes(this.Username+":"+this.Password);
                 Client.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Basic", Convert.ToBase64String(byteArray));
                     return true;
             }

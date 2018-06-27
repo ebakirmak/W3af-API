@@ -66,10 +66,10 @@ namespace W3af_REST_API.View
                     }
                     else if (selected == "H")
                     {
-                        IP = "172.17.6.4";
-                        Port = 5000;
-                        Username = "admin";
-                        Password = "secret";
+                        IP = "172.17.7.221";
+                        Port = 9590;
+                        Username = "unitmon";
+                        Password = "aHy3cR_*V@LQ";
                         Certificate = true;
                         break;
                     }
